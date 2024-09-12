@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup # for next updates
 from colorama import init
 from colorama import Fore
 import random
