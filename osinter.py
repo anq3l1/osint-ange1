@@ -15,8 +15,8 @@ def search_username(username):
     "Instagram": "https://www.instagram.com/{}",
     "Reddit": "https://www.reddit.com/user/{}",
     "Facebook": "https://www.facebook.com/{}",
-    "VK": "https://vk.com/{}",
-    "TikTok": "https://tiktok.com/@{}"
+    "TikTok": "https://tiktok.com/@{}",
+    "Telegram": "https://t.me/{}"
     }
     
     found_accounts = {}
@@ -28,9 +28,10 @@ def search_username(username):
             if response.status_code == 200:
                 found_accounts[platform] = full_url
             else:
-                print(platform + Fore.RED + "Not found")
+                print('Not found accounts: ')
+                print(platform + ': ' + Fore.RED + "Not found")
         except requests.ConnectionError:
-            print(platform + ': ' + Fore.RED + "Connection error")
+            print(Fore.RESET + platform + ': ' + Fore.RED + "Connection error")
 
     if found_accounts:
         print(Fore.RESET + "\nFound accounts:")
