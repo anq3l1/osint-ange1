@@ -6,7 +6,7 @@ import random
 
 init()
 
-list_color = [Fore.BLUE, Fore.GREEN, Fore.RED, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA, Fore.WHITE]
+list_color = [Fore.BLUE, Fore.GREEN, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA, Fore.WHITE]
 
 def search_username(username):
     social_platforms = {
@@ -15,7 +15,8 @@ def search_username(username):
     "Instagram": "https://www.instagram.com/{}",
     "Reddit": "https://www.reddit.com/user/{}",
     "Facebook": "https://www.facebook.com/{}",
-    "VK": "https://vk.com/{}"
+    "VK": "https://vk.com/{}",
+    "TikTok": "https://tiktok.com/@{}"
     }
     
     found_accounts = {}
@@ -27,7 +28,7 @@ def search_username(username):
             if response.status_code == 200:
                 found_accounts[platform] = full_url
             else:
-                print(f"{platform}: Not found")
+                print(platform + Fore.RED + "Not found")
         except requests.ConnectionError:
             print(platform + ': ' + Fore.RED + "Connection error")
 
