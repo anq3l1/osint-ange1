@@ -8,75 +8,95 @@ from art import tprint
 from osinter import search_username
 
 import instaloader
-from bs4 import BeautifulSoup # for next updates
+from bs4 import BeautifulSoup  # for future updates
 import requests
 
 init()
 
-def instagram_account_info(username): # get info Instagram account
+
+def instagram_account_info(username):  # Get Instagram account info
     il = instaloader.Instaloader()
 
-    profile = instaloader.Profile.from_username(context=il.context, username=username)
+    try:
+        profile = instaloader.Profile.from_username(il.context, username=username)
 
-    print(Fore.YELLOW + 'Instagram: ' + Fore.RESET + f'\n* Profile info: {username}\n___________________________\n\n+ Proflie biography: {profile.biography}\n* Proflie media: {profile.mediacount}\n+ Profile followers: {profile.followers}\n* Profile followees: {profile.followees}\n\n+ Profile link: https://www.instagram.com/' + username, '\n___________________________')
+        print(Fore.YELLOW + 'Instagram: ' + Fore.RESET + f'\n* Profile info: {username}\n___________________________\n\n'
+              f'+ Profile biography: {profile.biography}\n'
+              f'* Profile media: {profile.mediacount}\n'
+              f'+ Profile followers: {profile.followers}\n'
+              f'* Profile followees: {profile.followees}\n\n'
+              f'+ Profile link: https://www.instagram.com/{username}\n'
+              f'___________________________')
 
-def info_tg_account(username): # get info Telegram account
+    except instaloader.exceptions.ProfileNotExistsException:
+        print(Fore.YELLOW + 'Instagram: ' + Fore.RESET + f'\n* Profile info: {username}\n___________________________\n'
+              + Fore.RED + '\nUser info not found!' + Fore.RESET)
+
+
+def info_tg_account(username):  # Get Telegram account info
     url = 'https://t.me/' + username
-
     r = requests.get(url)
-
     soup = BeautifulSoup(r.text, 'html.parser')
 
     name = soup.find(class_='tgme_page_title')
     user = soup.find(class_='tgme_page_extra')
     bio = soup.find(class_='tgme_page_description')
 
-    if bio is not None:
-        print(Fore.BLUE + '\nTelegram:' + Fore.RESET + f'\n+ Profile info: {username}\n___________________________\n\n* Name: {name.text}\n+ Username: {user.text}\n* Bio: {bio.text}\n\n+ Profile link: {url}\n___________________________')
+    if name and user:
+        bio_text = bio.text if bio else "None"
+        print(Fore.BLUE + '\nTelegram:' + Fore.RESET + f'\n+ Profile info: {username}\n___________________________\n\n'
+              f'* Name: {name.text}\n'
+              f'+ Username: {user.text}\n'
+              f'* Bio: {bio_text}\n\n'
+              f'+ Profile link: {url}\n'
+              f'___________________________')
     else:
-        print(Fore.BLUE + '\nTelegram:' + Fore.RESET + f'\n+ Profile info: {username}\n___________________________\n\n* Name: {name.text}\n+ Username: {user.text}\n* Bio: None\n\n+ Profile link: {url}\n___________________________')
+        print(Fore.BLUE + '\nTelegram:' + Fore.RESET + f'\n+ Profile info: {username}\n___________________________\n'
+              + Fore.RED + '\nUser info not found!' + Fore.RESET)
 
-os.system('cls')
-time.sleep(1)
-tprint('os1nt anqe1', font='small')
-print('\t\t\t', ' powered by ange1')
-print('__________________________________________________\n')
 
 def osint():
-    global username
     username = input('* Enter the user of the person you want to scan: ')
-
     search_username(username)
+    
+    return username
+
+
+def main_menu():
+    while True:
+        choice = input("\nEnter 'e/E' to exit the program, 'i/I' for more info, or 'a/A' to try again: ").lower()
+        if choice == 'a':
+            return 'again'
+        elif choice == 'i':
+            return 'info'
+        elif choice == 'e':
+            return 'exit'
+        else:
+            print("Invalid input. Please try again.")
+
 
 def main():
-    osint()
+    os.system('cls')
+    time.sleep(1)
+    tprint('os1nt anqe1', font='small')
+    print('\t\t\t', ' powered by ange1')
+    print('__________________________________________________\n')
 
-    def try_again():
+    while True:
+        username = osint()
+
         while True:
-            again_or_exit_or_info = input('\nEnter \'e/E\' to exit the program, or \'i/I\' for more info, or enter \'a/A\' to try again: ')
-            if again_or_exit_or_info.lower() == 'a':
-                osint()
-            if again_or_exit_or_info.upper() == 'A':
-                osint()
-            elif again_or_exit_or_info.lower() == 'i':
-                print('More info:\n')
-                instagram_account_info(username=username)
-                info_tg_account(username=username)
-            elif again_or_exit_or_info.lower() == 'I':
-                print('More info:\n')
-                instagram_account_info(username=username)
-                info_tg_account(username=username)
-            elif again_or_exit_or_info.lower() == 'e':
-                print('Exiting...')
-                break
-            elif again_or_exit_or_info.upper() == 'E':
-                print('Exiting...')
-                break
-            else:
-                print('Invalid enter. Try again.')
-                try_again()
+            action = main_menu()
 
-    try_again()
+            if action == 'again':
+                break  # Exit to outer loop to re-enter username
+            elif action == 'info':
+                instagram_account_info(username)
+                info_tg_account(username)
+            elif action == 'exit':
+                print("Exiting...")
+                return
+
 
 if __name__ == '__main__':
     main()
