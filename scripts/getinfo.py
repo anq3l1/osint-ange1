@@ -1,10 +1,37 @@
 import requests 
 from bs4 import BeautifulSoup # for Telegram and more..<
 
-from colorama import init
 from colorama import Fore
 
 import instaloader # for Instagram
+
+#____________________________________Get information from GitHub account______________________________________________
+
+def github_info_account(username):
+    url = f"https://api.github.com/users/{username}"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+
+        user_id = data.get("id")
+        login = data.get("login")
+        name = data.get("name")
+        public_repos = data.get("public_repos")
+        followers = data.get("followers")
+
+        print("\nGitHub:" + Fore.RESET + f'\n* Profile info: {username}\n___________________________\n\n'
+              f"+ ID: {user_id}\n"
+              f"* Username (Login): {login})\n" 
+              f"+ Name: {name}\n"
+              f"* Public Repositories: {public_repos}\n"
+              f"+ Followers: {followers}\n"
+              f"* Profile link: https://github.com/{username}\n"
+              f"___________________________\n")
+    else:
+        print(f'GitHub:\n* Profile info: {username}\n___________________________\n'
+              + Fore.RED + '\nUser info not found!' + Fore.RESET)
 
 #___________________________________Get information from Instagram account______________________________________________
 
@@ -48,4 +75,4 @@ def info_tg_account(username):
     else:
         print(Fore.BLUE + '\nTelegram:' + Fore.RESET + f'\n+ Profile info: {username}\n___________________________\n'
               + Fore.RED + '\nUser info not found!' + Fore.RESET)
-    
+
