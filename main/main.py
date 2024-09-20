@@ -47,6 +47,7 @@ def main():
             if action == 'again':
                 break  # Exit to outer loop to re-enter username
             elif action == 'info':
+                github_info_account(username)
                 instagram_account_info(username)
                 info_tg_account(username)
             elif action == 'exit':
