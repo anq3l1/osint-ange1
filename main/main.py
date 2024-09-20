@@ -5,9 +5,9 @@ from colorama import init
 from colorama import Fore
 
 from art import tprint
-from osinter import search_username
+from scripts.osinter import search_username
 
-from getinfo import info_tg_account, instagram_account_info
+from scripts.getinfo import info_tg_account, instagram_account_info
 
 init()
 
