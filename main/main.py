@@ -7,7 +7,7 @@ from colorama import Fore
 from art import tprint
 from scripts.osinter import search_username
 
-from scripts.getinfo import info_tg_account, instagram_account_info
+from scripts.getinfo import info_tg_account, instagram_account_info, github_info_account
 
 init()
 
